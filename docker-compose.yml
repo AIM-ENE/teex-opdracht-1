@@ -18,11 +18,11 @@ services:
       retries: 20
       start_period: 3s
     volumes:
-      - type: tmpfs # Use a temporary voluma as data for development. Change this if you actually want persistant data.
+      - type: tmpfs # Use a temporary volume as data for development. Change this if you actually want persistent data.
         target: /var/lib/mysql
   backend:
     depends_on:
-      db: # delays app startup untill mysql is healthy
+      db: # delays app startup until db is healthy
         condition: service_healthy
     build: ./backend
     restart: on-failure
