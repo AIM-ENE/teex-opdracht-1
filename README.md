@@ -57,6 +57,29 @@ Op dit moment is de pagina nog in ontwikkeling. Er is een pagina met twee tabs, 
 - Beveiliging van de applicatie is nog niet in scope. In deze fase van de ontwikkeling van pizza.nu is dit niet het grootste risico. Also: Security is saai en stom.
 - Omdat snelheid belangrijk is voor pizza.nu is moeten wijzigingen binnen één seconde zichtbaar zijn voor andere gebruikers.
 
+## Component Diagram
+
+```mermaid
+    C4Context
+    title Container Diagram for Pizza.nu
+    Person(pizzaBakker, "De pizzabakker")
+        Person(customer, "Pizza lover", "Een klant van pizza.nu die een pizza besteld.")
+        
+
+        System_Boundary(b1, "Pizza.nu") {
+        System(Frontend, "Browser frontend", "React webapp")
+        System(Backend, "Backend", "Spring Boot.")
+        SystemDb(DB, "Pizza.nu DB", "MySQL MariaDB dialect")
+        }
+
+
+    Rel(customer, Frontend, "Besteld en bekijkt status van pizza")
+    Rel(pizzaBakker, Frontend, "Checks orders in")
+    Rel(Frontend, Backend, "Sends HTTP requests to")
+    Rel(Backend, DB, "Stores data in")
+```
+
+
 ## Beperkingen
 
 - Ter bevordering van de standaardisatie worden alle applicaties binnen pizza.nu ontwikkeld met Spring Boot (Java) en React (JavaScript).
