@@ -42,6 +42,8 @@ Front-end
 
 ### Component Diagram
 
+![](design/structurizr-1-API-Components.png)
+
 ![](design/structurizr-1-Browser-Components.png)
 
 ![](design/structurizr-1-Load-first-question.png)

@@ -12,12 +12,16 @@ workspace "ANSIE" "This is the model for the ANSIE application" {
                 openQuestion = component "OpenQuestion" "Shows the current open question from the App Component and its properties"
                 question = component "Question" "Shows the current question from the App Component and its properties"
                 navigator = component "Navigator" "Provides buttons to retrieve next and previous question based on the current question in the App component"
+                navigationStates = component "NavigationStates" "Renders the Navigator component with the current question and its properties depending on the current state of the application"
                 navigationButton = component "NavigationButton" "Buttons that listens to next or previous question event listener"
                 restGateway = component "REST Gateway" "Responsible for communicating with the API"
+                gateways = component "Gateways" "Contains several gateways that can be used by the restGateway"
             }
             apiApplication = container "Back-end" {
                 questionController = component "OpenQuestion Controller" "Allows people to perform CRUD operations on open questions through a REST API"
                 openQuestionRepository = component "OpenQuestion Repository" "Provides logic to communicate with the OpenQuestions table"
+                exceptionHandler = component "Exception Handler" "Handles exceptions thrown by the application"
+                logger = component "Logger" "Logs exceptions from the generic exception handler in the application"
             }
             database = container "Database" {
                 openQuestionsTable = component "OpenQuestions" "Table with all open ended questions"
@@ -37,14 +41,19 @@ workspace "ANSIE" "This is the model for the ANSIE application" {
         student -> app "Starts application"
         app -> app "Renders"
         app -> restGateway "Uses"
+        restGateway -> gateways "Uses one specific gateway from"
         app -> openQuestion "Renders"
         openQuestion -> question "Renders"
         app -> navigator "Renders"
-        navigator -> navigationButton "Renders multiple"
-        navigator -> app "Dispatches events to"
-        restGateway -> questionController "Retrieves openquestions data" "JSON / HTTP"
+        navigator -> navigationStates "Delegates the rendering of the Navigator component to"
+        navigationStates -> navigationButton "Renders multiple"
+        navigationStates -> app "Dispatches events to"
+        gateways -> questionController "Retrieves openquestions data" "JSON / HTTP"
         questionController -> openQuestionRepository "Retrieves openquestions data"
         openQuestionRepository -> openQuestionsTable "Retrieves openquestions data" "SQL / TCP/IP"
+        questionController -> exceptionHandler "Delegates the handling of exceptions"
+        openQuestionRepository -> exceptionHandler "Delegates the handling of exceptions"
+        exceptionHandler -> logger "Logs exceptions" "Slf4j"
     }
 
     views {
@@ -110,12 +119,14 @@ workspace "ANSIE" "This is the model for the ANSIE application" {
             student -> app "Application started"
             app -> app "useEffect()"
             app -> restGateway "fetchQuestion(index, setQuestion, setIndex)"
+            restGateway -> gateways "fetchQuestion(index, setQuestion, setIndex)"
             restGateway -> app "setQuestion(question)"
             app -> openQuestion "render(question)"
             openQuestion -> question "render(question)"
             app -> navigator "render(question.id, nextEventHandler, previousEventHandler)"
-            navigator -> navigationButton "render(nextEventHandler)"
-            navigator -> navigationButton "render(previousEventHandler)"
+            navigator -> navigationStates "render(question.id, nextEventHandler, previousEventHandler)"
+            navigationStates -> navigationButton "render(nextEventHandler)"
+            navigationStates -> navigationButton "render(previousEventHandler)"
 
             autoLayout
             description "Summarises how the question feature works in the single-page application."
@@ -125,12 +136,14 @@ workspace "ANSIE" "This is the model for the ANSIE application" {
             navigator -> app "nextEventHandler()"
             app -> app "setIndex(index+1)"
             app -> restGateway "fetchQuestion(index, setQuestion, setIndex)"
+            restGateway -> gateways "fetchQuestion(index, setQuestion, setIndex)"
             restGateway -> app "setQuestion(question)"
             app -> openQuestion "render(question)"
             openQuestion -> question "render(question)"
             app -> navigator "render(question.id, nextEventHandler, previousEventHandler)"
-            navigator -> navigationButton "render(nextEventHandler)"
-            navigator -> navigationButton "render(previousEventHandler)"
+            navigator -> navigationStates "render(question.id, nextEventHandler, previousEventHandler)"
+            navigationStates -> navigationButton "render(nextEventHandler)"
+            navigationStates -> navigationButton "render(previousEventHandler)"
             autoLayout
             description "Summarises how the next question feature works in the single-page application."
         }
