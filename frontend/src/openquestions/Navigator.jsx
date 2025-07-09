@@ -1,4 +1,5 @@
 import NavigationButton from "./NavigationButton";
+import React from "react";
 
 export default function Navigator({ currentQuestionId, next, previous }) {
   if (currentQuestionId === 1) {

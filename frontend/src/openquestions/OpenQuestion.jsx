@@ -1,5 +1,6 @@
 import Question from "./Question";
 import { TextField } from "@mui/material";
+import React from "react";
 
 export default function OpenQuestion({ question }) {
   return (
