@@ -1,13 +1,20 @@
-import axios from "axios";
+import { FetchStrategies } from "./Gateways";
 
-const fetchQuestion = (index, setQuestion, setIndex) => {
-  axios("http://localhost:8080/api/examQuestions/open/" + index)
-    .then((response) => {
-      setQuestion(response.data);
+const fetchQuestion = (index, setSquestion, setIndex) => {
+    fetchQuestionUsingStrategy("fetch", index, setSquestion, setIndex);
+}
+
+const fetchQuestionUsingStrategy = (strategy, index, setQuestion, setIndex) => {
+  const url = `http://localhost:8080/api/examQuestions/open/${index}`;
+  const options = {}; // Add any required options here
+
+  FetchStrategies[strategy](url, options)
+    .then((data) => {
+      setQuestion(data);
       setIndex(index);
     })
     .catch((error) => {
-      console.log(error);
+      console.error("Error fetching question:", error);
     });
 };
 
