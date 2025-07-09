@@ -73,9 +73,13 @@ Front-end: Geen configuratie.
 
 ## Operation and Support
 
+Bouw (compileer etc.) de hele stack met Docker Compose:
+
+`docker-compose build`
+
 Run de hele stack met Docker Compose:
 
-`docker compose up`
+`docker-compose up`
 
 De verschillende componenten gebruiken elk een eigen netwerk port.
 
